@@ -29,6 +29,7 @@ production:
 
 ## [Speaker roster at a conference](https://github.com/gogaruco/gogaruco.github.com/blob/2013/data/speakers.yml)
 
+* Begins with a document header that does not specify a yaml version. e.g. `--- %YAML%1.1`
 * Is a mapping `:` of mappings.
   * The items in the roster mapping are mappings.
   * The items in the feature and sorted mappings are sequences `-`.

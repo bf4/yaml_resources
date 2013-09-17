@@ -7,3 +7,5 @@
 ## [Speaker roster at a conference](recipes/speaker_roster.md)
 
 - uses aliases `&`, anchors `*`, and folded block in a mapping `: >`
+
+  - i18n

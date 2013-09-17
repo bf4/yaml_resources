@@ -1,0 +1,15 @@
+
+- YAML in Ruby
+  - Security
+    - SafeYAML
+    - Psych 2.0
+  - bugs
+  - type-related gotchas
+    - date (iso8601)
+    - boolean
+  - Parsers
+    - libyaml, SnakeYAML, 
+    - Psych vs. Syck
+    - erb pre-loading (not baked-in like with syck ? Big 1.0 -> 1.1/2 change)
+  - JRuby, Rubinius, etc.
+  - peculiar to ruby: symbols, set

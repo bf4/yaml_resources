@@ -11,7 +11,7 @@ YAML resources
 - [YAML in Ruby](ruby.md)
 
 
-- Opinions on yaml
+- [Opinions on yaml](opinions.md)
 - History of YAML
 - Future of yaml
 

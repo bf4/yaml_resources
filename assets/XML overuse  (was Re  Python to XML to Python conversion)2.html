@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<!-- saved from url=(0067)https://mail.python.org/pipermail/python-list/2002-July/130842.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+   <title> XML overuse? (was Re: Python to XML to Python conversion)
+   </title>
+   <link rel="Index" href="https://mail.python.org/pipermail/python-list/2002-July/index.html">
+   <link rel="made" href="mailto:python-list%40python.org?Subject=Re%3A%20XML%20overuse%3F%20%28was%20Re%3A%20Python%20to%20XML%20to%20Python%20conversion%29&In-Reply-To=%3C20020716142712.A70366%40doublegemini.com%3E">
+   <meta name="robots" content="index,nofollow">
+   
+   <link rel="Previous" href="https://mail.python.org/pipermail/python-list/2002-July/127579.html">
+   <link rel="Next" href="https://mail.python.org/pipermail/python-list/2002-July/152162.html">
+ <link type="text/css" rel="stylesheet" href="chrome-extension://cpngackimfmofbokmjmljamhdncknpmg/style.css"><script type="text/javascript" charset="utf-8" src="chrome-extension://cpngackimfmofbokmjmljamhdncknpmg/page_context.js"></script></head>
+ <body bgcolor="#ffffff" screen_capture_injected="true">
+   <h1>XML overuse? (was Re: Python to XML to Python conversion)</h1>
+    <b>Clark C . Evans</b> 
+    <a href="mailto:python-list%40python.org?Subject=Re%3A%20XML%20overuse%3F%20%28was%20Re%3A%20Python%20to%20XML%20to%20Python%20conversion%29&In-Reply-To=%3C20020716142712.A70366%40doublegemini.com%3E" title="XML overuse? (was Re: Python to XML to Python conversion)">cce at clarkevans.com
+       </a><br>
+    <i>Tue Jul 16 20:27:12 CEST 2002</i>
+    <p></p><ul>
+        <li>Previous message: <a href="https://mail.python.org/pipermail/python-list/2002-July/127579.html">Webware 0.7/Singleton pattern
+</a></li>
+        <li>Next message: <a href="https://mail.python.org/pipermail/python-list/2002-July/152162.html">there's no DefaultHandler
+</a></li>
+         <li> <b>Messages sorted by:</b> 
+              <a href="https://mail.python.org/pipermail/python-list/2002-July/date.html#130842">[ date ]</a>
+              <a href="https://mail.python.org/pipermail/python-list/2002-July/thread.html#130842">[ thread ]</a>
+              <a href="https://mail.python.org/pipermail/python-list/2002-July/subject.html#130842">[ subject ]</a>
+              <a href="https://mail.python.org/pipermail/python-list/2002-July/author.html#130842">[ author ]</a>
+         </li>
+       </ul>
+    <hr>  
+<!--beginarticle-->
+<pre>On Tue, Jul 16, 2002 at 03:18:30PM +0200, holger krekel wrote:
+|<i> Huaiyu Zhu wrote:
+</i>|<i> &gt; The basic idea is quite simple: consider a data structure as a tree; denote
+</i>|<i> &gt; the type of branching at each node; indent the subtrees.  It appears to me
+</i>|<i> &gt; that indentation is easier to handle than quotes and escapes.  Here's a
+</i>|<i> &gt; simple example:
+</i>|<i> 
+</i>|<i> It does and it's very interesting.  It does sound a lot like 
+</i>|<i> <a href="http://yaml.org/">http://yaml.org</a> to me, though  (They even have an RFC).
+</i>|<i> Don't you think YAML might be a superset of your ideas?
+</i>
+Yes, Steve Howell even has a python implementation of it...
+<a href="http://yaml.org/python/PyYaml_14jul2002.tgz">http://yaml.org/python/PyYaml_14jul2002.tgz</a>
+
+I'm sure he'd love your comments/contributions.
+
+|<i> Let me add some random thoughts/questions about your/yaml's scheme 
+</i>|<i> (i hope i am not missing something obvious):
+</i>|<i> 
+</i>|<i> - how is a binary data-stream's size determined? What about
+</i>|<i>   open-ended streams?  Embedding of arbitrary data-streams
+</i>|<i>   is very useful (IMO).
+</i>
+In YAML, we have a built-in BASE64 type which hopefully most
+implementations will support.   As for handling embedded streams,
+this works as long as they are indented properly and only use
+printable characters (see specification).
+
+|<i> - somehow your and yaml's scheme remind me of todays wiki techniques.  
+</i>|<i>   E.g. Wikis have methods of sequence-detection (bullets ...) and they
+</i>|<i>   have a commitment to readability. Of course, they are generally more 
+</i>|<i>   concerned with graphical views than with beeing a concise persistence
+</i>|<i>   scheme.  
+</i>
+Yes; Ward Cunningham's WikiWiki is a very cool concept and I'm sure
+we borrowed from it sub-conciously.
+
+|<i> - Is there a canonical conversion between XML and your scheme/YAML?
+</i>|<i>   Shouldn't be too hard, anyway...
+</i>
+<a href="http://yaml.org/xml.html">http://yaml.org/xml.html</a>
+
+|<i> - how do you express external addresses akin XPATH? 
+</i>|<i>   Ideas:
+</i>|<i>     - Mappings are easy, just take the 'key'. 
+</i>|<i>     - Sequences are easy (take the sequence number) but not very robust
+</i>|<i>       to deletions and insertions of items.
+</i>|<i>     - tag-names (IDs) which can be associated with any item might be interesting.
+</i>|<i>       readability is likely to suffer, probably.
+</i>
+I'm toying with making IDs a "special" key so that a YPATH
+like mechanism would work well... similar to XPATH/XSLT's "keys()"
+
+|<i> btw, I wonder whether some form of your and/or YAML's ideas should play a
+</i>|<i> role in the new persistence-SIG.  While the actual persistence mappings 
+</i>|<i> are not in the focus there are certainly some interesting connections 
+</i>|<i> between the two areas.
+</i>
+One of our other members, Brian Ingerson, is working on getting
+YAML into the core of Parrot (<a href="http://parrot-code.org/">http://parrot-code.org</a>)
+
+|<i> this sure is useful. Especially for me since i work with a (perl-) 
+</i>|<i> friend on a project which needs to address the persistence-question. And
+</i>|<i> we want to have it interoperable, simple and fast.  I guess looking
+</i>|<i> at YAML might avoid that you have to dig too much into old harddisks :-)
+</i>
+Also, there is a Perl implementation of YAML sited in the 
+downloads section of the website written by Brian Ingerson.
+Having more members would be great!  We could use more implementations,
+and generic YAML tools (like YAML-DIFF)
+
+Best,
+
+;) Clark
+
+-- 
+Clark C. Evans                   Axista, Inc.
+<a href="http://www.axista.com/">http://www.axista.com</a>            800.926.5525
+XCOLLA Collaborative Project Management Software
+
+
+
+</pre>
+
+<!--endarticle-->
+    <hr>
+    <p></p><ul>
+        <!--threads-->
+	<li>Previous message: <a href="https://mail.python.org/pipermail/python-list/2002-July/127579.html">Webware 0.7/Singleton pattern
+</a></li>
+	<li>Next message: <a href="https://mail.python.org/pipermail/python-list/2002-July/152162.html">there's no DefaultHandler
+</a></li>
+         <li> <b>Messages sorted by:</b> 
+              <a href="https://mail.python.org/pipermail/python-list/2002-July/date.html#130842">[ date ]</a>
+              <a href="https://mail.python.org/pipermail/python-list/2002-July/thread.html#130842">[ thread ]</a>
+              <a href="https://mail.python.org/pipermail/python-list/2002-July/subject.html#130842">[ subject ]</a>
+              <a href="https://mail.python.org/pipermail/python-list/2002-July/author.html#130842">[ author ]</a>
+         </li>
+       </ul>
+
+<hr>
+<a href="http://mail.python.org/mailman/listinfo/python-list">More information about the Python-list
+mailing list</a><br>
+
+</body></html>

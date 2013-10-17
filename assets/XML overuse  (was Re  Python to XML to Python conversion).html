@@ -1,0 +1,161 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<!-- saved from url=(0067)https://mail.python.org/pipermail/python-list/2002-July/151888.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+   <title> XML overuse? (was Re: Python to XML to Python conversion)
+   </title>
+   <link rel="Index" href="https://mail.python.org/pipermail/python-list/2002-July/index.html">
+   <link rel="made" href="mailto:python-list%40python.org?Subject=Re%3A%20XML%20overuse%3F%20%28was%20Re%3A%20Python%20to%20XML%20to%20Python%20conversion%29&In-Reply-To=%3C20020718092648.A2517%40doublegemini.com%3E">
+   <meta name="robots" content="index,nofollow">
+   
+   <link rel="Previous" href="https://mail.python.org/pipermail/python-list/2002-July/147835.html">
+   <link rel="Next" href="https://mail.python.org/pipermail/python-list/2002-July/146841.html">
+ <link type="text/css" rel="stylesheet" href="chrome-extension://cpngackimfmofbokmjmljamhdncknpmg/style.css"><script type="text/javascript" charset="utf-8" src="chrome-extension://cpngackimfmofbokmjmljamhdncknpmg/page_context.js"></script></head>
+ <body bgcolor="#ffffff" screen_capture_injected="true">
+   <h1>XML overuse? (was Re: Python to XML to Python conversion)</h1>
+    <b>Clark C . Evans</b> 
+    <a href="mailto:python-list%40python.org?Subject=Re%3A%20XML%20overuse%3F%20%28was%20Re%3A%20Python%20to%20XML%20to%20Python%20conversion%29&In-Reply-To=%3C20020718092648.A2517%40doublegemini.com%3E" title="XML overuse? (was Re: Python to XML to Python conversion)">cce at clarkevans.com
+       </a><br>
+    <i>Thu Jul 18 15:26:48 CEST 2002</i>
+    <p></p><ul>
+        <li>Previous message: <a href="https://mail.python.org/pipermail/python-list/2002-July/147835.html">XML overuse? (was Re: Python to XML to Python conversion)
+</a></li>
+        <li>Next message: <a href="https://mail.python.org/pipermail/python-list/2002-July/146841.html">XML overuse? (was Re: Python to XML to Python conversion)
+</a></li>
+         <li> <b>Messages sorted by:</b> 
+              <a href="https://mail.python.org/pipermail/python-list/2002-July/date.html#151888">[ date ]</a>
+              <a href="https://mail.python.org/pipermail/python-list/2002-July/thread.html#151888">[ thread ]</a>
+              <a href="https://mail.python.org/pipermail/python-list/2002-July/subject.html#151888">[ subject ]</a>
+              <a href="https://mail.python.org/pipermail/python-list/2002-July/author.html#151888">[ author ]</a>
+         </li>
+       </ul>
+    <hr>  
+<!--beginarticle-->
+<pre>On Wed, Jul 17, 2002 at 11:52:50PM +0100, James Kew wrote:
+|<i> &gt; The information model fits documents well, but is a poor match 
+</i>|<i> &gt; for object serialization, which is 90% of the use cases 
+</i>|<i> &gt; programmers face.
+</i>|<i> 
+</i>|<i> Um: 90%? What sort of use cases do you see programmers forcing XML into?
+</i>|<i> Just curious: I fall into the "XML as poor-man's database/parser" camp at
+</i>|<i> the moment but I'm finding that for a poor man's solution it does quite a
+</i>|<i> good job with not much programmer effort to glue it together.
+</i>
+XML has its roots in structured document processing, and is a 
+descendent of SGML.  For example, the research reports by Gartner Group
+are primarly text, but there are specific tags to mark-up features of
+the report: chapters to generate a table of contents, keywords to make
+an index, vendor names to enable better searching, etc.  The reports
+are highly structured with tags, each tag having a beginning and an 
+ending.  Furthermore, there is also information which must be attached to
+a particular series of characters, such as an editorial comment, but must
+not appear in print.  All in all, structured document processing is 
+a rather complicated beast and SGML set out to tackle this problem.
+
+SGML thus had many features which supported these requirements.  It had
+attributes for out-of-band information which must be attached to a sequence
+of characters but not be printed.  It allows for mixed content, so that
+a paragraph for instance can contain a series of untagged characters 
+followed by a series of characters tagged bold.  Also, SGML allows for
+named lists, so that a chapter could be defined, for example, as a series
+of tables, paragraphs and figures.   SGML is also character based, since
+documents are in essence a large blob of characters "marked-up"
+
+SGML also had lots of features which enabled human-editing, it allowed
+you to skip end tags, it even allowed you to skip intermediate tags
+so that if a chapter couldn't contain characters directly (characters
+must be wrapped with a paragraph) the parser would implicitly include
+a paragraph anyway.  These extra syntax features did wonders for SGML's
+flexibility and in no small way were responsible for HTML's success.
+However, the implicit and missing end tags required that a parser know
+the document type definition before it could parse an SGML text.  Further,
+these implicit thingys made it hard to write parsers.   
+
+Therefore, there was a simplification movement in HTML land where
+the strcutral features (attributes, mixed content, named list) components
+of SGML were kept but the features which required a DTD and made 
+parsing complex (implicit tags, optional end tags, etc) were dropped.
+This simplified SGML was dubbed XML and was then markeded as 
+HTML-next-generation.   The marketing for XML has been enormous, but
+at it's core, it is still primarly a structured document markup language.
+
+Due to XML's popularity, lots of people have tried to get it to work
+for other things.   A few people have made XML databases and others
+have used XML for object serialization and invocation (SOAP/XML-RPC)
+and it has had many other uses.  However, most of these uses tend to 
+use a vastly simplified subset of XML and indeed impose additional
+constraints on XML as far as particular attributes, etc.   These 
+additional attributes/constrains are often needed to model native
+datastructures of modern languages and they include: (a) a way to 
+specify node type, (b) a way to express that a node occurs more than
+once in the graph-serialized-as-a-tree, (c) a manner to restrict 
+mixed content which does not usually occur in modern languages, (d)
+restrictions on named list model are also common.
+
+However, even with these constraints and fix-ups, at its heart,
+XML is a much more complicated beast and this complexity is reflected
+in the DOM and SAX interface.   Since this is the primary interface
+used by programmers, programmers must grapple with documentisms
+even if they don't need structured document features.
+
+In summary, I'm not saying that XML is bad.  It's is fantastic for
+structured document processing (I have direct experience here).  However,
+just beacuse it has had great success in this domain doesn't mean that
+this success will be long-lasting in other domains.  I see people
+using XML for lots of purposes it was never designed for; certainly
+it is flexible enough to do it, but the question is:  At what price?
+With XML the price is pretty steep, especially for "object serialization"
+requirements where attributes, mixed-content, and named-lists arn't
+needed and where other things such as typing, graph links, map/lists,
+and treating characters as a whole scalar (rather than as chunks
+of characters) is what you want.
+
+So, that said, YAML (YAML Ain't Markup Language, <a href="http://yaml.org/">http://yaml.org</a>) was 
+designed to meet the needs of object serialization directly.   In this 
+domain, I must say, it is much much better than XML.  Just like in the 
+document serialization domain for which XML was designed, YAML would 
+not work very well at all...  YAML isn't markup.  In YAML you have 
+dictionaries, lists, and scalars; you don't have chararacters that 
+are tagged.  The difference may seem subtle, but the actual impact 
+is huge.  It's a completely different mid-set.  For a programmer with 
+serialization needs, YAML fits the bill perfectly while XML requires 
+quite a bit of effort to make work.
+
+The only down side of YAML is that it isn't buzz-word compliant and
+the implementation's aren't quite mature yet.  The implementations will
+come along (the native python one isn't bad at all).  And hopefully 
+buzz-word compliance will come along eventually, till then there is
+a subsetted XML mapping of YAML (<a href="http://yaml.org/xml.html">http://yaml.org/xml.html</a>) which 
+you can use.   I'll patch up the python parser to read/write from
+this XML format within a few more weeks.   This way those team
+members which have to have to be buzz-word compliant can do so.
+For my day job, I'm more interested in getting the job done...
+
+Best,
+
+Clark
+
+
+
+</pre>
+
+<!--endarticle-->
+    <hr>
+    <p></p><ul>
+        <!--threads-->
+	<li>Previous message: <a href="https://mail.python.org/pipermail/python-list/2002-July/147835.html">XML overuse? (was Re: Python to XML to Python conversion)
+</a></li>
+	<li>Next message: <a href="https://mail.python.org/pipermail/python-list/2002-July/146841.html">XML overuse? (was Re: Python to XML to Python conversion)
+</a></li>
+         <li> <b>Messages sorted by:</b> 
+              <a href="https://mail.python.org/pipermail/python-list/2002-July/date.html#151888">[ date ]</a>
+              <a href="https://mail.python.org/pipermail/python-list/2002-July/thread.html#151888">[ thread ]</a>
+              <a href="https://mail.python.org/pipermail/python-list/2002-July/subject.html#151888">[ subject ]</a>
+              <a href="https://mail.python.org/pipermail/python-list/2002-July/author.html#151888">[ author ]</a>
+         </li>
+       </ul>
+
+<hr>
+<a href="http://mail.python.org/mailman/listinfo/python-list">More information about the Python-list
+mailing list</a><br>
+
+</body></html>

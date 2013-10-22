@@ -1,0 +1,166 @@
+---
+Topic:
+- point
+- artifact, e.g. picture or quote
+
+---
+YAML, what is it good for?
+
+by Benjamin Fleischer
+
+---
+
+---
+What is it good for?
+- YAML is widely-used but not well-understood
+- Hard to find information
+- Reconsidered place in community
+- Nothing:
+  For some people:
+  - CVE: the answer is framed by the Psych exploits of Jan/Feb 2013,
+  - Mark Bates: 'YAML is aweful and should be wiped from the face of the Earth'
+  For others, JSON or an internal DSL is better and simpler
+- Audience: What do you think?
+(Is YAML safe?)
+- YAML is just text, is perfectly safe until evaludated
+  Quote: Aaron Patterson F7U4 re: YAML and Marshal
+
+---
+Why am I talking?
+- Audience: How many of you have used YAML in your own projects?
+- Audience: What have you used YAML for? Configuration? Logging? Data Store
+- Audience: What tools / libraries do you know that rely on YAML. e.g. Rubygems, Outside of Ruby?
+- Audience: Did you know that YAML includes JSON?
+- Audience: Do you now the difference between the YAML spec and the various implementations
+  - Syck, Psyck, libyaml
+- Audience: How long do you think YAML has been around? Where did it come from?
+- Audience: Did you know Rails serializers use YAML, not Marshal?
+- Audience: Have you written a custom Marshal dump/load using YAML?
+
+
+---
+Why am I talking?
+- I think YAML is often misunderstood - like Marshal!
+- I like merge keys. Chad Fowler Rails Recipes. (Not a core syntax!)
+- JSON is getting popular. Does YAML have a place?
+- Want to share what I've learned
+- cce: How could something so broken be adopted so widely?
+
+---
+Where did it come from? (How did it get popular)
+- SGML: 1986
+- XML: 1998
+- 2001 Escape from XML
+  - Clark C. Evans
+  - Oren Ben-Kiki
+  - Brian Ingerson
+  - Neil Watkiss
+  - Steven Howell
+  Link, quote
+  - looked like XML
+  - needed to be readable (e.g. as court document)
+  - Simplicity, not speed
+- 2001-2003 libyaml Neil Watkiss,
+- 2003 _why/libsyck in Ruby 1.8 -> popular in Ruby, Python, and Perl
+- 2005:
+  - JSON -> 1.2
+  - Rails
+  - Kirill Simonov -> libyaml in c, PyYAML 3000, google summer of code
+
+--- Minimal YAML vocabulary
+- Indicator:
+  Collection (Mapping and Sequence): ['?', ':', '-', ',', '[]', '{}']
+  Scalar: ['''', '"', '|', '>'] # Folded >, Literal |
+  Document: ['%', '---', '...']
+  Misc: ['#']
+- Anchor: '&'
+- Alias: '*'
+- Keys: '<<'
+- Types (Repository):
+  Core: ['!!map', '!!seq', '!!str']
+  More: ['!!omap', '!!set']
+  Language Independent:
+    Null: ['~', 'null']
+    Decimal: 1234
+    Hexadecial: 0x4D2
+    Octal: 02333
+    Fixed Float: 1_230.15
+    Exponential Float: 12.3015e+02
+    Time:
+    Infinity: ['.inf', '-.Inf']
+    Not a Number: Nan
+    Boolean: ['Y', 'true', 'Yes', 'ON', 'n', 'FALSE', 'No', 'off']
+    Base64 Binary: '? !!binary R0lG...BADS='
+- Tag:
+  Explicit:
+    '!': Primary tag handle (primary namespace)
+    '!!': Secondary tag handle
+  Application-specific: local. e.g. language-specific, '!ruby/object:Set'
+  Global:
+
+URI:    taguri:yaml.org,2002:int
+shorthand:  !int
+definition: Mathematical integers.
+kind:   Scalar.
+formats:
+subset  canonical   ~=   0|-?[1-9][0-9]*        /* canonical integer format */
+implicit    dec ~=   [-+]?(0|[1-9])[0-9,]*      /* base 10 signed decimal integer format */
+implicit    oct ~=   [-+]?0[0-7,]+      /* base 8 integer format */
+implicit    hex ~=   [-+]?0x[0-9a-fA-F,]+       /* base 16 integer format */
+implicit    base60  ~=   [-+]?[1-9][0-9,]*(:[0-5]?[0-9])+       /* base 60 integer format */
+canonical: 685230
+decimal: +685,230
+octal: 02472256
+hexadecimal: 0x0A,74,AE
+sexagesimal: 190:20:30
+
+--- Beyond arrays, hashes, and scalars
+
+Encoding
+
+---
+What is it good for? (How does it compare)
+- vs. JSON, XML, SGML< DSL, multi-language
+
+CCE: > JSON is brilliant. It's the 80/20 rule.
+     I hand-write and scan YAML files. I don't do that with JSON.
+     That said, JSON is the format of Web 2.0 data interchange.
+     JSON is the XML killer
+---
+What's wrong with YAML?
+- Criticisims
+- Bugs
+- Spec, productions
+- unclear
+- type-systems, app-specific
+- incomplete: merge keys
+- Bugs:
+  - octal
+- canonical
+
+---
+What's right with YAML?
+- libyaml
+- maps to primitives
+- readable / formatting
+- serialization
+
+---
+What needs to be done.
+- 2009-today not much done
+- YAML 1.2, 2.0
+- helps needed. small, busy, volunteer community
+- don't blame YAML
+
+---
+Where is YAML used?
+- rubygems metadata
+- ansible
+-
+
+---
+Library usage options:
+- Dumping format as JSON,
+
+- format folding
+- Psych 2.0, safe_load in Psych, PyYAML
